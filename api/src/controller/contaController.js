@@ -1,5 +1,7 @@
 const contaModel = require("../model/contaModel");
 
+
+
 const getAll = async (req, res) => {
   try {
     const contas = await contaModel.getAll();
@@ -20,11 +22,11 @@ const getId = async (req, res) => {
 };
 
 const getNome = async (req, res) => {
-    const {proprietario} = req.body;
+    const proprietario = req.body.proprietario;
 
-    const conta = await contaModel.getNome(req.body);
+    conta = await contaModel.getNome(req.body.proprietario);
   
-  return res.status(200).json(conta);
+  return res.status(200).json(proprietario);
 };
 
 const createConta = async (req, res) => {
@@ -37,14 +39,32 @@ const createConta = async (req, res) => {
   }
 };
 
-const updateConta = async (req, res) => {};
+const updateConta = async (req, res) => {
+  try {
+    const id = req.params;
+    const cliente = req.body
+
+    const conta = await contaModel.updateConta(id, cliente);
+
+    res.status(203).json({message:'Conta alterada com sucesso'});
+
+  } catch (error) {
+    res.status(405).json(error);
+  }
+};
 
 const deleteConta = async (req, res) => {
-  const { id } = req.params;
 
-  const conta = await contaModel.deleteConta(id);
 
-  return res.status(202).json({ message: "usuario deletado" });
+  try {
+    const { id } = req.params;
+
+    const conta = await contaModel.deleteConta(id);
+  
+    return res.status(202).json({ message: "usuario deletado" });
+  } catch (error) {
+    res.status(407).json(error);
+  }
 };
 
 module.exports = {
@@ -53,4 +73,5 @@ module.exports = {
   getNome,
   createConta,
   deleteConta,
+  updateConta
 };
