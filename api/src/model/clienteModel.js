@@ -9,16 +9,65 @@ const getAll =async ()=>{
 }
 
 const createCliente = async (cliente)=>{
-    const {nome, data_nasc, cpf, endereco} = cliente;
+    try {
+        const { nome, data_nasc, cpf, endereco} = cliente;
 
-    const query = `INSERT INTO cliente (nome, data_nasc, cpf, endereco) VALUES (?,?,?,?)`;
+        const query = `INSERT INTO cliente (nome, data_nasc, cpf, endereco) VALUES (?,?,?,?)`;
+    
+        return createdCliente = await connection.execute(query,[nome, data_nasc, cpf, endereco]);
+    } catch (error) {
+        console.log(error)
+    }
 
-    return createdCliente = await (query,[nome, data_nasc, cpf, endereco]);
 
 }
 
+const getId = async (id) => {
+    
 
+    const query1 = `SELECT * FROM bd_caixa.cliente where id = ?`
+
+    const selectId = await connection.execute(query,[id]);
+
+    return selectId[0];
+}
+
+const updateCliente = async(id,cliente)=> {
+    const { nome, data_nasc, cpf, endereco} = cliente;
+
+    const query = `UPDATE bd_caixa.cliente SET nome = ?, data_nasc = ?, cpf = ?, endereco = ? WHERE (id = ?);`
+    const updatedCliente = await connection.execute(query,[nome,data_nasc,cpf,endereco, id]);
+
+    return updatedCliente;
+}
+
+const deleteCliente = async(id)=>{
+    const query1 = `SELECT id FROM bd_caixa.cliente where id = ?`
+
+    const selectId = await connection.execute(query1,[id]);
+
+    if (selectId =! "") {
+        try {
+            const query = `DELETE FROM cliente WHERE id = ?`;
+    
+            const deletedCliente = await connection.execute(query,[id])
+        
+            return deletedCliente;
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        console.log('esse cliente não existe');
+    }
+
+
+
+
+}
 module.exports = {
     getAll,
-    createCliente
+    getId,    
+    createCliente,
+    updateCliente,
+    deleteCliente
 }

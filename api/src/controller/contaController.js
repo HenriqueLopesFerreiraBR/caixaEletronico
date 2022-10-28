@@ -14,7 +14,6 @@ const getAll = async (req, res) => {
 
 // Pegar um conta pelo Id
 const getId = async (req, res) => {
-  const { id } = req.params;
 
   const conta = await contaModel.getId(req.params.id);
 

@@ -1,6 +1,5 @@
 const clienteModel = require('../model/clienteModel');
 
-
 const getAll = async (req,res)=>{
     try {
         const clientes = await clienteModel.getAll();
@@ -10,18 +9,59 @@ const getAll = async (req,res)=>{
     }
 }
 
-const createCliente = async (req,res)=>{
+const getId = async (req, res) =>{
     try {
-        const user = req.body;
+        //const id = { "id" : req.params.id}
 
-        const Cliente = await clienteModel.createCliente(user);
-        return res.status(201).json({ mensage: "Cliente cadastrado com sucesso" });
+        const cliente = await clienteModel.getId(req.params.id);
+
+        return res.status(201).json(cliente);
 
     } catch (error) {
-        return res.status(401).json({ mensage: error });
+        return res.status(401).json(error);
+        
+    }
+}
+
+const createCliente = async (req,res)=>{
+    try {
+        const cliente = await clienteModel.createCliente(req.body);
+
+        return res.status(202).json(cliente);
+        //return res.status(201).json(user);
+
+    } catch (error) {
+        return res.status(402).json({ mensage: error });
+    }
+}
+
+const updateCliente = async (req,res)=>{
+
+    try {
+        const id = req.params.id
+
+        const cliente = await clienteModel.updateCliente(id,req.body);
+        
+        return res.status(203).json({message:"Cliente atualizado com sucesso"});
+    } catch (error) {
+        return res.status(403).json(error);
+    }
+}
+
+const deleteCliente = async (req,res)=>{
+    try {
+        const cliente = clienteModel.deleteCliente(req.params.id);
+
+        return res.status(205).json({message:`cliente deletado`});
+    } catch (error) {
+        return res.status(405).json(error);
     }
 }
 
 module.exports = {
-    getAll
+    getAll,
+    getId,
+    createCliente,
+    updateCliente,
+    deleteCliente
 }

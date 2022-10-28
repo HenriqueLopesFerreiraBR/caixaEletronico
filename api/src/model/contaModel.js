@@ -17,7 +17,6 @@ const getNome = async(conta)=>{
 
 //Metodo para buscar uma conta pelo id
 const getId = async(id)=>{
-    const {codigo} = id
 
     const query = `SELECT * FROM conta WHERE codigo = ?`
     const select = await connection.execute(query,[id])
